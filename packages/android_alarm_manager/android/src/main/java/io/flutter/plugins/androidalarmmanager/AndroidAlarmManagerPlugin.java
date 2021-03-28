@@ -141,7 +141,7 @@ public class AndroidAlarmManagerPlugin implements FlutterPlugin, MethodCallHandl
           result.success(true);
           break;
         case "Alarm.nextAlarmclock":
-          long res = AlarmService.getNextAlarm();
+          long res = AlarmService.getNextAlarm(context);
           result.success(res);
         default:
           result.notImplemented();
