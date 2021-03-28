@@ -81,9 +81,8 @@ public class AndroidAlarmManagerPlugin implements FlutterPlugin, MethodCallHandl
       // - "Alarm.oneShotAt"
       // - "Alarm.periodic"
       // - "Alarm.cancel"
-      alarmManagerPluginChannel =
-          new MethodChannel(
-              messenger, "plugins.flutter.io/android_alarm_manager", JSONMethodCodec.INSTANCE);
+      alarmManagerPluginChannel = new MethodChannel(
+          messenger, "plugins.flutter.io/android_alarm_manager", JSONMethodCodec.INSTANCE);
 
       // Instantiate a new AndroidAlarmManagerPlugin and connect the primary method channel for
       // Android/Flutter communication.
@@ -141,6 +140,9 @@ public class AndroidAlarmManagerPlugin implements FlutterPlugin, MethodCallHandl
           AlarmService.cancel(context, requestCode);
           result.success(true);
           break;
+        case "Alarm.nextAlarmclock":
+          long res = AlarmService.getNextAlarm();
+          result.success(res);
         default:
           result.notImplemented();
           break;
@@ -164,15 +166,8 @@ public class AndroidAlarmManagerPlugin implements FlutterPlugin, MethodCallHandl
       boolean rescheduleOnReboot = json.getBoolean(6);
       long callbackHandle = json.getLong(7);
 
-      return new OneShotRequest(
-          requestCode,
-          alarmClock,
-          allowWhileIdle,
-          exact,
-          wakeup,
-          startMillis,
-          rescheduleOnReboot,
-          callbackHandle);
+      return new OneShotRequest(requestCode, alarmClock, allowWhileIdle, exact, wakeup, startMillis,
+          rescheduleOnReboot, callbackHandle);
     }
 
     final int requestCode;
@@ -184,15 +179,8 @@ public class AndroidAlarmManagerPlugin implements FlutterPlugin, MethodCallHandl
     final boolean rescheduleOnReboot;
     final long callbackHandle;
 
-    OneShotRequest(
-        int requestCode,
-        boolean alarmClock,
-        boolean allowWhileIdle,
-        boolean exact,
-        boolean wakeup,
-        long startMillis,
-        boolean rescheduleOnReboot,
-        long callbackHandle) {
+    OneShotRequest(int requestCode, boolean alarmClock, boolean allowWhileIdle, boolean exact,
+        boolean wakeup, long startMillis, boolean rescheduleOnReboot, long callbackHandle) {
       this.requestCode = requestCode;
       this.alarmClock = alarmClock;
       this.allowWhileIdle = allowWhileIdle;
@@ -215,14 +203,8 @@ public class AndroidAlarmManagerPlugin implements FlutterPlugin, MethodCallHandl
       boolean rescheduleOnReboot = json.getBoolean(5);
       long callbackHandle = json.getLong(6);
 
-      return new PeriodicRequest(
-          requestCode,
-          exact,
-          wakeup,
-          startMillis,
-          intervalMillis,
-          rescheduleOnReboot,
-          callbackHandle);
+      return new PeriodicRequest(requestCode, exact, wakeup, startMillis, intervalMillis,
+          rescheduleOnReboot, callbackHandle);
     }
 
     final int requestCode;
@@ -233,14 +215,8 @@ public class AndroidAlarmManagerPlugin implements FlutterPlugin, MethodCallHandl
     final boolean rescheduleOnReboot;
     final long callbackHandle;
 
-    PeriodicRequest(
-        int requestCode,
-        boolean exact,
-        boolean wakeup,
-        long startMillis,
-        long intervalMillis,
-        boolean rescheduleOnReboot,
-        long callbackHandle) {
+    PeriodicRequest(int requestCode, boolean exact, boolean wakeup, long startMillis,
+        long intervalMillis, boolean rescheduleOnReboot, long callbackHandle) {
       this.requestCode = requestCode;
       this.exact = exact;
       this.wakeup = wakeup;
