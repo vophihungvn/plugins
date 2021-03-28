@@ -285,6 +285,7 @@ public class AlarmService extends JobIntentService {
   }
 
   public static long getNextAlarm() {
+    AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     return manager.getNextAlarmClock().getTriggerTime();
   }
 
