@@ -303,4 +303,12 @@ class AndroidAlarmManager {
         await _channel.invokeMethod<bool>('Alarm.cancel', <dynamic>[id]);
     return r ?? false;
   }
+
+  /// Get next alarm
+  static Future<int> getNextAlarm() async {
+    final int? nextAlarm =
+        await _channel.invokeMethod<int>('Alarm.nextAlarmclock');
+
+    return nextAlarm ?? 0;
+  }
 }
